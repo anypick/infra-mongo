@@ -1,0 +1,7 @@
+mongo:
+  addr: 192.168.56.136:27107
+  username: ziidu
+  password: ziidu
+  maxPoolSize: 1000
+  minPoolSize: 10
+  params: ""
