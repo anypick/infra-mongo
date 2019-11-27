@@ -17,6 +17,12 @@ const (
 	defaultMinPoolSize uint64 = 10
 )
 
+type MongoConnection struct {
+	Client     *mongo.Client
+	DataBase   []*mongo.Database
+	Collection []*mongo.Collection
+}
+
 var client *mongo.Client
 
 func GetClient() *mongo.Client {
@@ -41,8 +47,9 @@ func (MongoStarter) Setup(ctx infra.StarterContext) {
 	// mongodb://username:password@127.0.0.1:27017,username:password@127.0.0.1:27017,username:password@127.0.0.1:27017/?safe=true;w=2;wtimeoutMS=2000
 	addrs = strings.Split(conf.Addr, ",")
 	for _, k := range addrs {
-		body = fmt.Sprintf("%s:%s@%s", conf.Username, conf.Password, k)
+		body += fmt.Sprintf("%s:%s@%s,", conf.Username, conf.Password, k)
 	}
+	body = body[0 : len(body)-1]
 	clientOptions = options.Client().ApplyURI(fmt.Sprintf("mongodb://%s%s", body, conf.Params))
 	if conf.MaxPoolSize != 0 {
 		maxPoolSize = uint64(conf.MaxPoolSize)
@@ -50,9 +57,9 @@ func (MongoStarter) Setup(ctx infra.StarterContext) {
 	if conf.MinPoolSize != 0 {
 		minPoolSize = uint64(conf.MinPoolSize)
 	}
-	clientOptions.MaxPoolSize = &maxPoolSize
-	clientOptions.MinPoolSize = &minPoolSize
-	if client, err = mongo.NewClient(clientOptions); err != nil {
+	clientOptions.SetMaxPoolSize(maxPoolSize)
+	clientOptions.SetMinPoolSize(minPoolSize)
+	if client, err = mongo.Connect(context.Background(), clientOptions); err != nil {
 		panic(err)
 	}
 }

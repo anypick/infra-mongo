@@ -1,7 +1,9 @@
 mongo:
-  addr: 192.168.56.136:27107
+  addr: 192.168.56.136:27017
   username: ziidu
   password: ziidu
-  maxPoolSize: 1000
+  maxPoolSize: 100
   minPoolSize: 10
-  params: ""
+  database: ziidu
+  # 这个必须要指定库
+  params: /?authSource=ziidu

@@ -12,7 +12,6 @@ import (
 func InitTest() {
 	infra.Register(&container.YamlStarter{})
 	Init()
-	infra.Register(&MongoStarter{})
 	infra.Register(&infra.BaseInitializerStarter{})
 	source := props.NewYamlSource(GetCurrentFilePath("./testx/config.yml", 0))
 	app := infra.New(*source)

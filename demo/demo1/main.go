@@ -27,7 +27,8 @@ func main() {
 	)
 
 	// 多个host使用 , 分开
-	clientOptions = options.Client().ApplyURI("mongodb://192.168.56.136:27017")
+	//clientOptions = options.Client().ApplyURI("mongodb://192.168.56.136:27017")
+	clientOptions = options.Client().ApplyURI("mongodb://ziidu:ziidu@192.168.56.136:27017")
 
 	// 设置连接超时
 	timeoutCtx, cancelFunc = context.WithTimeout(context.Background(), time.Second*10)
@@ -37,14 +38,17 @@ func main() {
 		return
 	}
 
-	collection = client.Database("tutorial").Collection("users")
+	//time.Sleep(time.Second * 3)
+	collection = client.Database("ziidu").Collection("ziidu")
+
 	//fFlag := false
 	//tFlag := true
 	//CreateIndies(collection, mongo.IndexModel{Keys: bsonx.Doc{{"name", bsonx.Int32(1)}}})
-	// Delete(collection)
+	// Delete(collection)s
 	//DeleteIndex(collection, "name_1")
-	GetIndies(collection)
+	//GetIndies(collection)
 
+	InsertOne(collection)
 	//client.Database("").RunCommand()
 }
 
