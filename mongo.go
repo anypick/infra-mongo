@@ -17,10 +17,10 @@ const (
 	defaultMinPoolSize uint64 = 10
 )
 
-type MongoConnection struct {
-	Client     *mongo.Client
-	DataBase   []*mongo.Database
-	Collection []*mongo.Collection
+var database string
+
+func GetDatabase() string {
+	return database
 }
 
 var client *mongo.Client
@@ -44,6 +44,7 @@ func (MongoStarter) Setup(ctx infra.StarterContext) {
 		addrs         []string
 		err           error
 	)
+	database = conf.Database
 	// mongodb://username:password@127.0.0.1:27017,username:password@127.0.0.1:27017,username:password@127.0.0.1:27017/?safe=true;w=2;wtimeoutMS=2000
 	addrs = strings.Split(conf.Addr, ",")
 	for _, k := range addrs {
